@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_file
 import pandas as pd
 import numpy as np
 from io import BytesIO
+import os
 
 app = Flask(__name__)
 
@@ -74,5 +75,6 @@ def download():
                      as_attachment=True,
                      mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
