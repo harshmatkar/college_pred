@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Home Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      justify-content: left;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      margin-left: 50px;
+      
+    }
+    .container {
+      border : 1px solid #000000;
+      border-radius: 10px;
+      padding: 10px;
+      padding-left: 30px;
+      padding-right: 30px;
+      width: 300px;
+      margin-top: 20px;
+    }
+
+    hr{
+      border: 1px solid #000000;
+      width:98%;
+    }
+
+    h1{
+      text-align: center;
+      font-size: 45px;
+      font-weight:bold;
+    }
+
+    h2 {
+      text-align: center;
+      font-family:'Courier New', Courier, monospace;
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #000000;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+  </style>
+</head>
+<body>
+<h1 style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color:rgb(112, 119, 119); border: 2px solid #aaa9a9;">College Predictor</h1><hr style="margin-top: -20px;">
+<div style="display: flex;">  
+<div class="container">
+    <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: #074925; border: 1px solid black; padding: 5px;">Predict Best College</h2><hr>
+    <form style="margin-top: 30px;" method="POST" action="/">
+      <label for="lowerLimit" style="color: #6b6a6a;">From This Rank</label>
+      <input type="number" id="lowerLimit" placeholder="ex:1237" name="lowerLimit" required>
+
+      <label for="upperLimit" style="color: #6b6a6a;">To This Rank</label>
+      <input type="number" id="upperLimit" placeholder="ex:3267" name="upperLimit" required>
+
+      <label for="gender" style="color: #6b6a6a;">Gender</label>
+      <select id="gender" name="gender">
+        <option value="">Select</option>
+        <option value="Gender-Neutral">Gender-Neutral</option>
+        <option value="Female">Female</option>
+      </select>
+
+      <label for="category" style="color: #6b6a6a;">Category</label>
+      <select id="category" name="category">
+        <option value="">Select</option>
+        <option value="OPEN">OPEN</option>
+        <option value="OBC-NCL">OBC-NCL</option>
+        <option value="SC">SC</option>
+        <option value="ST">ST</option>
+      </select>
+
+      <label for="exam" style="color: #6b6a6a;">EXAM</label>
+      <select id="exam" name="exam">
+        <option value="">Select</option>
+        <option value="JEE MAIN">JEE MAIN</option>
+        <option value="JEE ADVANCED">JEE ADVANCED</option>
+        <option value="MHTCET">MHTCET</option>
+      </select>
+
+      <button type="submit">Submit</button>
+      {% if result_heading %}
+        <p style="font-weight: bold; font-size: 18px; color: #fa1717; margin-top: 10px;">
+          <u>{{ result_heading }}</u>
+        </p>
+      {% endif %}
+    </form>
+  </div>
+  <div style="background-color:#e9e8e8; width: 800px; margin-left: 60px; height: 550px; margin-top: 20px; padding: 15px; border-radius: 10px;">
+    <div style="display: flex;">
+    <span style="font-weight: 700; font-size: 20px; border: 1px solid black; padding: 15px;">This analysis is based on Jossa Cuttoffs 2024 Round 5 <hr style="border: 2px solid rgb(158, 157, 157);"></span>
+    <a href="{{ url_for('download') }}" style="margin-left: 20px; margin-top: 30px;">
+      Save File
+    </a></div>
+      
+    {% if not result%}
+    <div style="margin-top: 100px; font-size: 100px; font-weight: 700; color: #dfdddd;">Lorem Flask Enter Details</div>
+    {% endif %}
+    
+    {% if result %}
+    <div style="max-height: 450px; overflow-y: auto; border: 1px solid #ccc; margin-top: 20px;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead style="position: sticky; top: 0; background-color: #ddd;">
+          <tr>
+            {% for key in result[0].keys() %}
+              <th style="border: 1px solid black; padding: 5px;">{{ key }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in result %}
+            <tr>
+              {% for value in row.values() %}
+                <td style="border: 1px solid black; padding: 5px;">{{ value }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </div>
+  
+  
+  <div style="border: 1px solid #000000; border-radius: 10px; width: 250px; margin-left: 60px; height: 550px; margin-top: 20px; margin-right: 20px; text-align: left;">
+    <h2 style="color: rgb(44, 44, 179); font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Contacts</h2><hr style="width: 250px; margin-top: -15px; border: 1px solid #c9c9c9;">
+    <a href="https://www.linkedin.com/in/harsh-matkar-319611280/" style="margin-left: 30px;">@LinkedIn</a><br>
+    <a href="" style="margin-left: 30px;">@Mail</a><br>
+    <a href="" style="margin-left: 30px;">@Instagram</a><br>
+    
+    <a href="https://www.youtube.com/@matkarharsh881" style="margin-left: 30px;">@youtube</a>
+    <h2 style="color: rgb(44, 44, 179); font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Important</h2><hr style="width: 250px; margin-top: -15px; border: 1px solid #c9c9c9">
+    <a href="" style="margin-left: 30px;">@Jossa_shedule</a><br>
+    <a href="" style="margin-left: 30px;">@cetcell_shedule</a><br>
+    <a href="https://www.mockitupp.in" style="margin-left: 30px;">@mockitupp.in</a>
+  </div>                                                                                                  
+  </div>
+  <hr>
+  <div style="border: 2px solid black; font-size: 30px; font-weight: 700; padding: 15px; margin-top: 50px;">
+    Using Machine Learning Algorithm to find 10 most probable colleges user will get.
+  </div>
+  <div style="height: 800px; background: #e7e7e7; margin-top: 50px;">
+
+  </div>
+</body>
+</html>
